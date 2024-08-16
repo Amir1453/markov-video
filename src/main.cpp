@@ -21,7 +21,6 @@ int main(int argc, char *argv[]) {
   program.add_argument("--verbose").flag().help("enable output for ffmpeg, latex and ImageMagick.");
   program.add_argument("-m", "--markov-file").required().help("specify the file which contains the markov chain.");
   program.add_argument("-i", "--iterations")
-      .required()
       .scan<'i', std::size_t>()
       .help("specify the number of iterations for the markov chain.");
   program.add_argument("-o", "--output-file").required().help("specify the output file path.");
@@ -44,6 +43,11 @@ int main(int argc, char *argv[]) {
 
   try {
     program.parse_args(argc, argv);
+    if ((program.is_used("-V") || program.is_used("-G")) && !program.is_used("-i")) {
+      std::cerr << "-i required when using -V or -G" << std::endl;
+      std::cerr << program;
+      return 1;
+    }
   } catch (const std::runtime_error &err) {
     std::cerr << err.what() << std::endl;
     std::cerr << program;
@@ -55,7 +59,7 @@ int main(int argc, char *argv[]) {
   const fs::path &latex_output_directory = program.get("-lod");
   const fs::path &filelist_path = program.get("-flp");
   const std::string &latex_compiler = program.get("-lc");
-  const std::size_t &iterations = program.get<std::size_t>("-i");
+
   const bool &verbose = program.get<bool>("--verbose");
   const bool &no_cleanup = program.get<bool>("-nc");
   const bool &edit_latex = program.get<bool>("-el");
@@ -69,6 +73,7 @@ int main(int argc, char *argv[]) {
 
     if (program.is_used("-V")) {
       const fs::path &video_folder = program.get("-V");
+      const std::size_t &iterations = program.get<std::size_t>("-i");
       const auto &markov_states = iterate_markov_states(mc, iterations);
       generate_all_markov_graphs(mc, build_folder);
       if (edit_latex) {
@@ -101,6 +106,7 @@ int main(int argc, char *argv[]) {
     if (program.is_used("-V")) {
       const fs::path &video_folder = program.get("-V");
       const fs::path &build_folder = video_folder / constants::DEFAULT_BUILD_DIRECTORY;
+      const std::size_t &iterations = program.get<std::size_t>("-i");
       const auto &markov_states = iterate_markov_states(mc, iterations);
 
       create_dir(build_folder);
