@@ -2,7 +2,3 @@
 target
 compile_commands.json
 .clang-format
-
-videos
-temp
-workspace
