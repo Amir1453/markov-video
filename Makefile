@@ -1,8 +1,12 @@
 # Thanks to Job Vranish (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)
 ifeq ($(OS),Windows_NT)
     TARGET_EXEC = markov-video.exe
+    RM = del /Q
+    MKDIR = mkdir
 else
     TARGET_EXEC = markov-video
+    RM = rm -rf
+    MKDIR = mkdir -p
 endif
 
 # Compiler
@@ -39,12 +43,12 @@ $(DEBUG_DIR)/$(TARGET_EXEC): $(OBJS)
 
 # Build step for C source
 $(DEBUG_DIR)/%.c.o: %.c
-	@mkdir -p $(dir $@)
+	$(MKDIR) $(dir $@)
 	$(CC) $(CPPFLAGS) $(CFLAGS) -c $< -o $@
 
 # Build step for C++ source
 $(DEBUG_DIR)/%.cpp.o: %.cpp
-	@mkdir -p $(dir $@)
+	$(MKDIR) $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
 # The final build step for release builds
@@ -56,21 +60,25 @@ $(RELEASE_DIR)/$(TARGET_EXEC): $(OBJS_RELEASE)
 
 # Build step for C source
 $(RELEASE_DIR)/%.c.o: %.c
-	@mkdir -p $(dir $@)
+	$(MKDIR) $(dir $@)
 	$(CC) $(CPPFLAGS_RELEASE) $(CFLAGS) -c $< -o $@
 
 # Build step for C++ source
 $(RELEASE_DIR)/%.cpp.o: %.cpp
-	@mkdir -p $(dir $@)
+	$(MKDIR) $(dir $@)
 	$(CXX) $(CPPFLAGS_RELEASE) $(CXXFLAGS) -c $< -o $@
 
 # Auxillary commands
 .PHONY: clean rebuild rebuild-release run run-release
 
 clean:
-		@if [ -d "$(BUILD_DIR)" ]; then \
-			rm -r $(BUILD_DIR); \
-		fi
+ifeq ($(OS),Windows_NT)
+	@if exist "$(BUILD_DIR)" $(RM) "$(BUILD_DIR)"
+else
+	@if [ -d "$(BUILD_DIR)" ]; then \
+		rm -r $(BUILD_DIR); \
+	fi
+endif
 
 rebuild: clean $(DEBUG_DIR)/$(TARGET_EXEC)
 
