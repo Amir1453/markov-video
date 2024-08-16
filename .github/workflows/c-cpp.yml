@@ -1,0 +1,38 @@
+name: C/C++ CI
+
+on:
+  push:
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build with Make
+        run: make release
+      - name: Create Release
+        id: create_release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}  # Use the tag that triggered the workflow
+          release_name: Release ${{ github.ref }}  # Name of the release
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Markov Video Artifact
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ github.ref }}  # Use the same tag as above
+          files: ./target/release/markov-video
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
