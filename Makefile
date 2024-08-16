@@ -1,5 +1,9 @@
 # Thanks to Job Vranish (https://spin.atomicobject.com/2016/08/26/makefile-c-projects/)
-TARGET_EXEC := markov-video
+ifeq ($(OS),Windows_NT)
+    TARGET_EXEC = markov-video.exe
+else
+    TARGET_EXEC = markov-video
+endif
 
 # Compiler
 CXX := clang++
