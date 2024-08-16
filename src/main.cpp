@@ -20,12 +20,12 @@ int main(int argc, char *argv[]) {
 
   program.add_argument("--verbose").flag().help("enable output for ffmpeg, latex and ImageMagick.");
   program.add_argument("-m", "--markov-file").required().help("specify the file which contains the markov chain.");
-  program.add_argument("-i", "--iterations")
-      .scan<'i', std::size_t>()
-      .help("specify the number of iterations for the markov chain.");
   program.add_argument("-o", "--output-file").required().help("specify the output file path.");
   video_or_gif.add_argument("-V", "--videos-folder").help("specify the folder which contains the video segments.");
   video_or_gif.add_argument("-G", "--is-gif").flag().help("specify if output will be a gif. (NYI)");
+  program.add_argument("-i", "--iterations")
+      .scan<'i', std::size_t>()
+      .help("specify the number of iterations for the markov chain.");
   program.add_argument("-b", "--build-folder").help("specify the folder which will contain the auxillary files.");
   program.add_argument("-nc", "--no-cleanup").flag().help("disables removing auxillary files and folders.");
   program.add_argument("-el", "--edit-latex")
