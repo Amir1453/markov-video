@@ -37,6 +37,9 @@ int main(int argc, char *argv[]) {
   program.add_argument("-lod", "--latex-output-directory")
       .default_value(std::string(constants::DEFAULT_LATEX_OUTPUT_DIRECTORY))
       .help("specify the directory where the latex compiler will compile the .tex files to.");
+  program.add_argument("-lco", "--latex-compiler-options")
+      .default_value("")
+      .help("specify the latex compiler options which will be added to compile the .tex files.");
   program.add_argument("-flp", "--filelist-path")
       .default_value(std::string(constants::DEFAULT_FFMPEG_FILELIST))
       .help("specify the of the filelist path.");
@@ -58,7 +61,9 @@ int main(int argc, char *argv[]) {
   const fs::path &output_path = program.get("-o");
   const fs::path &latex_output_directory = program.get("-lod");
   const fs::path &filelist_path = program.get("-flp");
+
   const std::string &latex_compiler = program.get("-lc");
+  const std::string &latex_compiler_options = program.get("-lco");
 
   const bool &verbose = program.get<bool>("--verbose");
   const bool &no_cleanup = program.get<bool>("-nc");
@@ -79,7 +84,8 @@ int main(int argc, char *argv[]) {
       if (edit_latex) {
         wait_on_enter();
       }
-      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler, verbose);
+      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
+                                latex_compiler_options, verbose);
       convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, build_folder, verbose);
       overlay_images_to_videos(video_folder, build_folder, transition_matrix_size, build_folder, verbose);
       create_filelist(markov_states, build_folder / filelist_path);
@@ -95,7 +101,8 @@ int main(int argc, char *argv[]) {
       if (edit_latex) {
         wait_on_enter();
       }
-      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler, verbose);
+      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
+                                latex_compiler_options, verbose);
       convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, output_path, verbose);
       if (!no_cleanup) {
         delete_dir_or_file(build_folder);
@@ -114,7 +121,8 @@ int main(int argc, char *argv[]) {
       if (edit_latex) {
         wait_on_enter();
       }
-      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler, verbose);
+      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
+                                latex_compiler_options, verbose);
       convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, build_folder, verbose);
       overlay_images_to_videos(video_folder, build_folder, transition_matrix_size, build_folder, verbose);
       create_filelist(markov_states, build_folder / filelist_path);
@@ -131,7 +139,8 @@ int main(int argc, char *argv[]) {
       if (edit_latex) {
         wait_on_enter();
       }
-      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler, verbose);
+      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
+                                latex_compiler_options, verbose);
       convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, output_path, verbose);
       if (!no_cleanup) {
         delete_dir_or_file(build_folder);

@@ -85,10 +85,10 @@ void generate_all_markov_graphs(const MarkovChain &mc, const fs::path &output_pa
 
 void compile_markov_graph(const fs::path &folder_path, const fs::path &file_name,
                           const fs::path &latex_output_directory, const std::string &latex_compiler,
-                          const bool &verbose) {
+                          const std::string &latex_compiler_options, const bool &verbose) {
   std::ostringstream command;
-  command << latex_compiler << " -interaction=nonstopmode -output-directory=\"" << folder_path / latex_output_directory
-          << "\" \"" << folder_path / file_name << "\"";
+  command << latex_compiler << " " << latex_compiler_options << " -interaction=nonstopmode -output-directory=\""
+          << folder_path / latex_output_directory << "\" \"" << folder_path / file_name << "\"";
 
   check_verbosity(command, verbose);
 
@@ -97,7 +97,7 @@ void compile_markov_graph(const fs::path &folder_path, const fs::path &file_name
 
 void compile_all_markov_graphs(const fs::path &latex_folder_path, const std::size_t &file_count,
                                const fs::path &latex_output_directory, const std::string &latex_compiler,
-                               const bool &verbose) {
+                               const std::string &latex_compiler_options, const bool &verbose) {
   const fs::path &build_file_path = latex_folder_path / latex_output_directory;
 
   create_dir(build_file_path);
@@ -105,7 +105,7 @@ void compile_all_markov_graphs(const fs::path &latex_folder_path, const std::siz
   for (std::size_t i = 0; i < file_count; i++) {
     std::cout << "Compiling " << fs::path(std::to_string(i) + ".tex") << std::endl;
     compile_markov_graph(latex_folder_path, std::to_string(i) + ".tex", latex_output_directory, latex_compiler,
-                         verbose);
+                         latex_compiler_options, verbose);
   }
 }
 
