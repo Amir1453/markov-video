@@ -13,7 +13,7 @@
 
 namespace fs = std::filesystem;
 
-void generate_markov_graph(const MarkovChain &mc, const fs::path &output_path, const std::size_t &highlight_index,
+void generate_markov_graph(const MarkovChain &mc, const fs::path &output_path, std::size_t highlight_index,
                            const std::string &highlight_color) {
   const std::vector<std::vector<double>> &transitionMatrix = mc.getTransitionMatrix();
   const std::vector<std::string> &state_names = mc.getStateNames();
@@ -84,7 +84,7 @@ void generate_all_markov_graphs(const MarkovChain &mc, const fs::path &output_pa
 
 void compile_markov_graph(const fs::path &folder_path, const fs::path &file_name,
                           const fs::path &latex_output_directory, const std::string &latex_compiler,
-                          const std::string &latex_compiler_options, const bool &verbose) {
+                          const std::string &latex_compiler_options, bool verbose) {
   std::ostringstream command;
   command << latex_compiler << " " << latex_compiler_options << " -interaction=nonstopmode -output-directory=\""
           << folder_path / latex_output_directory << "\" \"" << folder_path / file_name << "\"";
@@ -92,9 +92,9 @@ void compile_markov_graph(const fs::path &folder_path, const fs::path &file_name
   execute_command(command, verbose);
 }
 
-void compile_all_markov_graphs(const fs::path &latex_folder_path, const std::size_t &file_count,
+void compile_all_markov_graphs(const fs::path &latex_folder_path, std::size_t file_count,
                                const fs::path &latex_output_directory, const std::string &latex_compiler,
-                               const std::string &latex_compiler_options, const bool &verbose) {
+                               const std::string &latex_compiler_options, bool verbose) {
   const fs::path &build_file_path = latex_folder_path / latex_output_directory;
 
   create_dir(build_file_path);
@@ -106,7 +106,7 @@ void compile_all_markov_graphs(const fs::path &latex_folder_path, const std::siz
   }
 }
 
-void convert_pdf_to_png(const fs::path &file_path, const fs::path &output_path, const bool &verbose) {
+void convert_pdf_to_png(const fs::path &file_path, const fs::path &output_path, bool verbose) {
   // Ensure the input file exists
   if (!fs::exists(file_path)) {
     throw std::runtime_error("Input file does not exist: " + file_path.string());
@@ -119,8 +119,8 @@ void convert_pdf_to_png(const fs::path &file_path, const fs::path &output_path, 
   execute_command(command, verbose);
 }
 
-void convert_all_pdfs_to_pngs(const fs::path &folder_path, const std::size_t &file_count, const fs::path &output_path,
-                              const bool &verbose) {
+void convert_all_pdfs_to_pngs(const fs::path &folder_path, std::size_t file_count, const fs::path &output_path,
+                              bool verbose) {
   // Ensure the input file exists
   if (!fs::exists(folder_path)) {
     throw std::runtime_error("Input folder does not exist: " + folder_path.string());

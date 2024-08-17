@@ -63,9 +63,9 @@ int main(int argc, char *argv[]) {
   const std::string &latex_compiler = program.get("-lc");
   const std::string &latex_compiler_options = program.get("-lco");
 
-  const bool &verbose = program.get<bool>("--verbose");
-  const bool &no_cleanup = program.get<bool>("-nc");
-  const bool &edit_latex = program.get<bool>("-el");
+  const bool verbose = program.get<bool>("--verbose");
+  const bool no_cleanup = program.get<bool>("-nc");
+  const bool edit_latex = program.get<bool>("-el");
 
   const fs::path &build_folder =
       program.is_used("-b") ? fs::path(program.get("-b")) : output_path / constants::DEFAULT_BUILD_DIRECTORY;
@@ -79,7 +79,7 @@ int main(int argc, char *argv[]) {
   switch (mode) {
   case ProcessingMode::BuildAndVideo: {
     const fs::path &video_folder = program.get("-V");
-    const std::size_t &iterations = program.get<std::size_t>("-i");
+    const std::size_t iterations = program.get<std::size_t>("-i");
     processor.build_and_video(video_folder, iterations);
     return 0;
   }
@@ -88,7 +88,7 @@ int main(int argc, char *argv[]) {
     return 0;
   case ProcessingMode::VideoOnly: {
     const fs::path &video_folder = program.get("-V");
-    const std::size_t &iterations = program.get<std::size_t>("-i");
+    const std::size_t iterations = program.get<std::size_t>("-i");
     processor.video_only(video_folder, iterations);
     return 0;
   }

@@ -28,8 +28,8 @@ void create_dir(const std::filesystem::path &folder_path);
 // Deletes the directory or file at the specified path.
 void delete_dir_or_file(const std::filesystem::path &folder_path);
 // If verbose is true, appends to the command output so that the output is silenced. Implemented seperately for Windows.
-void check_verbosity(std::ostringstream &command, const bool &verbose);
+void check_verbosity(std::ostringstream &command, bool verbose);
 // Executes a command and throws if a problem is encountered. Modifies the verbosity.
-void execute_command(std::ostringstream &command, const bool &verbose);
+void execute_command(std::ostringstream &command, bool verbose);
 // Waits until the user presses enter.
 void wait_on_enter();

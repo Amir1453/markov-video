@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 
 - Minor formatting issues.
 - Removed unnecessary includes and added needed ones.
+- Fixed const& primitives to be copied.
 
 ## [0.1.1] - 2024-08-17
 

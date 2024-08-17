@@ -40,20 +40,20 @@ void delete_dir_or_file(const fs::path &folder_path) {
 }
 
 #ifdef _WIN32
-void check_verbosity(std::ostringstream &command, const bool &verbose) {
+void check_verbosity(std::ostringstream &command, bool verbose) {
   if (!verbose) {
     command << "> NUL 2>&1";
   }
 }
 #else
-void check_verbosity(std::ostringstream &command, const bool &verbose) {
+void check_verbosity(std::ostringstream &command, bool verbose) {
   if (!verbose) {
     command << ">& /dev/null";
   }
 }
 #endif
 
-void execute_command(std::ostringstream &command, const bool &verbose) {
+void execute_command(std::ostringstream &command, bool verbose) {
   check_verbosity(command, verbose);
   int return_code = std::system(command.str().c_str());
   if (return_code != 0) {

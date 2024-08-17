@@ -12,7 +12,7 @@
 namespace fs = std::filesystem;
 
 void overlay_image_to_video(const fs::path &video_path, const fs::path &image_path, const fs::path &output_path,
-                            const bool &verbose) {
+                            bool verbose) {
   std::ostringstream command;
   command << "ffmpeg -y -i \"" << video_path << "\" -i \"" << image_path << "\" -filter_complex \"overlay=10:10\" \""
           << output_path << "\"";
@@ -23,8 +23,8 @@ void overlay_image_to_video(const fs::path &video_path, const fs::path &image_pa
   std::system(command.str().c_str());
 }
 
-void overlay_images_to_videos(const fs::path &videos_path, const fs::path &images_path, const std::size_t &file_count,
-                              const fs::path &outputs_path, const bool &verbose) {
+void overlay_images_to_videos(const fs::path &videos_path, const fs::path &images_path, std::size_t file_count,
+                              const fs::path &outputs_path, bool verbose) {
   // Ensure the input file exists
   if (!fs::exists(videos_path)) {
     throw std::runtime_error("Input videos folder does not exist: " + videos_path.string());
@@ -61,7 +61,7 @@ void create_filelist(const std::vector<std::size_t> &markov_states, const fs::pa
   }
 }
 
-void combine_segments(const fs::path &filelist_path, const fs::path &output, const bool &verbose) {
+void combine_segments(const fs::path &filelist_path, const fs::path &output, bool verbose) {
   // Construct the ffmpeg command to combine videos side by side
   std::ostringstream command;
   command << "ffmpeg -y -f concat -safe 0 -i \"" << filelist_path << "\" -c copy \"" << output << "\"";
