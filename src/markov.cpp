@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <fstream>
 #include <iostream>
+#include <iterator>
 #include <random>
 #include <sstream>
 #include <stdexcept>
@@ -57,7 +58,7 @@ void MarkovChain::validateTransitionMatrix() {
       sum += prob;
     }
     // Have to use this due to floating point arithmetic.
-    if (fabs(sum - constants::ONE) > constants::EPSILON) {
+    if (std::fabs(sum - constants::ONE) > constants::EPSILON) {
       throw std::invalid_argument("Transition probabilities must sum to 1.");
     }
   }

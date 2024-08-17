@@ -1,6 +1,7 @@
 #pragma once
 
 #include "markov.hpp"
+#include <cstddef>
 #include <filesystem>
 #include <string>
 

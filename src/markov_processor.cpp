@@ -3,6 +3,7 @@
 #include "helpers.hpp"
 #include "markov.hpp"
 #include "visuals.hpp"
+#include <cstddef>
 #include <filesystem>
 #include <string>
 
@@ -16,7 +17,7 @@ MarkovProcessor::MarkovProcessor(MarkovChain &mc, const fs::path &build_folder, 
       filelist_path(filelist_path), latex_compiler(latex_compiler), latex_compiler_options(latex_compiler_options),
       edit_latex(edit_latex), verbose(verbose), no_cleanup(no_cleanup) {}
 
-void MarkovProcessor::build_and_video(const std::filesystem::path &video_folder, std::size_t iterations) {
+void MarkovProcessor::build_and_video(const fs::path &video_folder, std::size_t iterations) {
   const auto &markov_states = iterate_markov_states(mc, iterations);
   const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
 
@@ -56,7 +57,7 @@ void MarkovProcessor::build_only() {
     delete_dir_or_file(build_folder);
 }
 
-void MarkovProcessor::video_only(const std::filesystem::path &video_folder, std::size_t iterations) {
+void MarkovProcessor::video_only(const fs::path &video_folder, std::size_t iterations) {
   const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
   const auto &markov_states = iterate_markov_states(mc, iterations);
 

@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <sstream>
+#include <string_view>
 
 // Namespace that contains constants.
 namespace constants {

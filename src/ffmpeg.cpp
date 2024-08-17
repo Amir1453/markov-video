@@ -1,11 +1,12 @@
 #include "ffmpeg.hpp"
 #include "helpers.hpp"
-#include <cstdlib>
+#include <cstddef>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <stdexcept>
+#include <string>
 #include <vector>
 
 namespace fs = std::filesystem;
@@ -19,7 +20,7 @@ void overlay_image_to_video(const fs::path &video_path, const fs::path &image_pa
   check_verbosity(command, verbose);
 
   // Execute the command
-  std ::system(command.str().c_str());
+  std::system(command.str().c_str());
 }
 
 void overlay_images_to_videos(const fs::path &videos_path, const fs::path &images_path, const std::size_t &file_count,

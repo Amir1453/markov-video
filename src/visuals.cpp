@@ -2,7 +2,6 @@
 #include "helpers.hpp"
 #include "markov.hpp"
 #include <cstddef>
-#include <cstdlib>
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
