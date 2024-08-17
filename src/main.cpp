@@ -1,3 +1,4 @@
+#include "main.hpp"
 #include "argparse.hpp"
 #include "ffmpeg.hpp"
 #include "helpers.hpp"
@@ -70,7 +71,6 @@ int main(int argc, char *argv[]) {
   const bool &edit_latex = program.get<bool>("-el");
 
   MarkovChain mc(markov_file);
-  const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
 
   if (program.is_used("-b")) {
     const fs::path &build_folder = program.get("-b");
@@ -79,34 +79,13 @@ int main(int argc, char *argv[]) {
     if (program.is_used("-V")) {
       const fs::path &video_folder = program.get("-V");
       const std::size_t &iterations = program.get<std::size_t>("-i");
-      const auto &markov_states = iterate_markov_states(mc, iterations);
-      generate_all_markov_graphs(mc, build_folder);
-      if (edit_latex) {
-        wait_on_enter();
-      }
-      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
-                                latex_compiler_options, verbose);
-      convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, build_folder, verbose);
-      overlay_images_to_videos(video_folder, build_folder, transition_matrix_size, build_folder, verbose);
-      create_filelist(markov_states, build_folder / filelist_path);
-      combine_segments(build_folder / filelist_path, output_path, verbose);
-      if (!no_cleanup) {
-        delete_dir_or_file(build_folder);
-      }
+      build_and_video(mc, build_folder, video_folder, output_path, latex_output_directory, filelist_path, iterations,
+                      latex_compiler, latex_compiler_options, edit_latex, verbose, no_cleanup);
       return 0;
 
     } else {
-      create_dir(output_path);
-      generate_all_markov_graphs(mc, build_folder);
-      if (edit_latex) {
-        wait_on_enter();
-      }
-      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
-                                latex_compiler_options, verbose);
-      convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, output_path, verbose);
-      if (!no_cleanup) {
-        delete_dir_or_file(build_folder);
-      }
+      build_only(mc, build_folder, output_path, latex_output_directory, latex_compiler, latex_compiler_options,
+                 edit_latex, verbose, no_cleanup);
       return 0;
     }
   } else {
@@ -114,40 +93,119 @@ int main(int argc, char *argv[]) {
       const fs::path &video_folder = program.get("-V");
       const fs::path &build_folder = video_folder / constants::DEFAULT_BUILD_DIRECTORY;
       const std::size_t &iterations = program.get<std::size_t>("-i");
-      const auto &markov_states = iterate_markov_states(mc, iterations);
 
       create_dir(build_folder);
-      generate_all_markov_graphs(mc, build_folder);
-      if (edit_latex) {
-        wait_on_enter();
-      }
-      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
-                                latex_compiler_options, verbose);
-      convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, build_folder, verbose);
-      overlay_images_to_videos(video_folder, build_folder, transition_matrix_size, build_folder, verbose);
-      create_filelist(markov_states, build_folder / filelist_path);
-      combine_segments(build_folder / filelist_path, output_path, verbose);
-      if (!no_cleanup) {
-        delete_dir_or_file(build_folder);
-      }
+      video_only(mc, build_folder, video_folder, output_path, latex_output_directory, filelist_path, iterations,
+                 latex_compiler, latex_compiler_options, edit_latex, verbose, no_cleanup);
+
       return 0;
 
     } else {
       const fs::path &build_folder = output_path / constants::DEFAULT_BUILD_DIRECTORY;
       create_dir(build_folder);
-      generate_all_markov_graphs(mc, build_folder);
-      if (edit_latex) {
-        wait_on_enter();
-      }
-      compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
-                                latex_compiler_options, verbose);
-      convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, output_path, verbose);
-      if (!no_cleanup) {
-        delete_dir_or_file(build_folder);
-      }
+      no_options(mc, build_folder, output_path, latex_output_directory, latex_compiler, latex_compiler_options,
+                 edit_latex, verbose, no_cleanup);
       return 0;
     }
   }
 
   return 0;
+}
+
+void build_and_video(MarkovChain &mc, const fs::path &build_folder, const fs::path &video_folder,
+                     const fs::path &output_path, const fs::path &latex_output_directory, const fs::path &filelist_path,
+                     const std::size_t &iterations, const std::string &latex_compiler,
+                     const std::string &latex_compiler_options, const bool &edit_latex, const bool &verbose,
+                     const bool &no_cleanup) {
+
+  const auto &markov_states = iterate_markov_states(mc, iterations);
+  const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
+
+  generate_all_markov_graphs(mc, build_folder);
+
+  if (edit_latex) {
+    wait_on_enter();
+  }
+
+  compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
+                            latex_compiler_options, verbose);
+  convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, build_folder, verbose);
+  overlay_images_to_videos(video_folder, build_folder, transition_matrix_size, build_folder, verbose);
+  create_filelist(markov_states, build_folder / filelist_path);
+  combine_segments(build_folder / filelist_path, output_path, verbose);
+
+  if (!no_cleanup) {
+    delete_dir_or_file(build_folder);
+  }
+}
+
+void build_only(const MarkovChain &mc, const fs::path &build_folder, const fs::path &output_path,
+                const fs::path &latex_output_directory, const std::string &latex_compiler,
+                const std::string &latex_compiler_options, const bool &edit_latex, const bool &verbose,
+                const bool &no_cleanup) {
+
+  const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
+
+  create_dir(output_path);
+  generate_all_markov_graphs(mc, build_folder);
+
+  if (edit_latex) {
+    wait_on_enter();
+  }
+
+  compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
+                            latex_compiler_options, verbose);
+  convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, output_path, verbose);
+
+  if (!no_cleanup) {
+    delete_dir_or_file(build_folder);
+  }
+}
+
+void video_only(MarkovChain &mc, const fs::path &build_folder, const fs::path &video_folder,
+                const fs::path &output_path, const fs::path &latex_output_directory, const fs::path &filelist_path,
+                const std::size_t &iterations, const std::string &latex_compiler,
+                const std::string &latex_compiler_options, const bool &edit_latex, const bool &verbose,
+                const bool &no_cleanup) {
+
+  const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
+  const auto &markov_states = iterate_markov_states(mc, iterations);
+
+  generate_all_markov_graphs(mc, build_folder);
+
+  if (edit_latex) {
+    wait_on_enter();
+  }
+
+  compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
+                            latex_compiler_options, verbose);
+  convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, build_folder, verbose);
+  overlay_images_to_videos(video_folder, build_folder, transition_matrix_size, build_folder, verbose);
+  create_filelist(markov_states, build_folder / filelist_path);
+  combine_segments(build_folder / filelist_path, output_path, verbose);
+
+  if (!no_cleanup) {
+    delete_dir_or_file(build_folder);
+  }
+}
+
+void no_options(MarkovChain &mc, const fs::path &build_folder, const fs::path &output_path,
+                const fs::path &latex_output_directory, const std::string &latex_compiler,
+                const std::string &latex_compiler_options, const bool &edit_latex, const bool &verbose,
+                const bool &no_cleanup) {
+
+  const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
+
+  generate_all_markov_graphs(mc, build_folder);
+
+  if (edit_latex) {
+    wait_on_enter();
+  }
+  compile_all_markov_graphs(build_folder, transition_matrix_size, latex_output_directory, latex_compiler,
+                            latex_compiler_options, verbose);
+  convert_all_pdfs_to_pngs(build_folder / latex_output_directory, transition_matrix_size, output_path, verbose);
+
+  if (!no_cleanup) {
+    delete_dir_or_file(build_folder);
+  }
 }
