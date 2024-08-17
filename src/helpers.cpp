@@ -1,4 +1,5 @@
 #include "helpers.hpp"
+#include <cstdlib>
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
@@ -51,6 +52,14 @@ void check_verbosity(std::ostringstream &command, const bool &verbose) {
   }
 }
 #endif
+
+void execute_command(std::ostringstream &command, const bool &verbose) {
+  check_verbosity(command, verbose);
+  int return_code = std::system(command.str().c_str());
+  if (return_code != 0) {
+    throw std::runtime_error("Command execution failed: " + command.str());
+  }
+}
 
 void wait_on_enter() {
   std::cout << "Please press enter after you are done." << std::endl;

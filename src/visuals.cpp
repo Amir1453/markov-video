@@ -90,9 +90,7 @@ void compile_markov_graph(const fs::path &folder_path, const fs::path &file_name
   command << latex_compiler << " " << latex_compiler_options << " -interaction=nonstopmode -output-directory=\""
           << folder_path / latex_output_directory << "\" \"" << folder_path / file_name << "\"";
 
-  check_verbosity(command, verbose);
-
-  std::system(command.str().c_str());
+  execute_command(command, verbose);
 }
 
 void compile_all_markov_graphs(const fs::path &latex_folder_path, const std::size_t &file_count,
@@ -119,10 +117,7 @@ void convert_pdf_to_png(const fs::path &file_path, const fs::path &output_path, 
   std::ostringstream command;
   command << "magick -density 300 \"" << file_path << "\" -quality 100 -resize 200% \"" << output_path << "\"";
 
-  check_verbosity(command, verbose);
-
-  // Execute the command
-  std::system(command.str().c_str());
+  execute_command(command, verbose);
 }
 
 void convert_all_pdfs_to_pngs(const fs::path &folder_path, const std::size_t &file_count, const fs::path &output_path,

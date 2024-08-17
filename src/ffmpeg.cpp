@@ -65,12 +65,6 @@ void combine_segments(const fs::path &filelist_path, const fs::path &output, con
   std::ostringstream command;
   command << "ffmpeg -y -f concat -safe 0 -i \"" << filelist_path << "\" -c copy \"" << output << "\"";
 
-  check_verbosity(command, verbose);
-
   std::cout << "Combining segments." << std::endl;
-  // Execute the command
-  int result = std::system(command.str().c_str());
-  if (result != 0) {
-    std::cerr << "Error combining videos." << std::endl;
-  }
+  execute_command(command, verbose);
 }
