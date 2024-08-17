@@ -8,10 +8,20 @@ All notable changes to this project will be documented in this file.
 
 - Added -latex-compiler-options flag which allows users to input their own flags.
 - Added CHANGELOG.md
+- Created class MarkovProcessor.
 
 ### Changed
 
 - Abstracted std::system calls to execute_command.
+- Changed release name to markov-video-v*.*.* in GitHub workflow. 
+- Separated functions from the main function.
+- Replaced if statements with switch case enums.
+- Improved README.md.
+
+### Fixed
+
+- Minor formatting issues.
+- Removed unnecessary includes and added needed ones.
 
 ## [0.1.1] - 2024-08-17
 
