@@ -98,7 +98,7 @@ void MarkovProcessor::no_options() {
     delete_dir_or_file(build_folder);
 }
 
-ProcessingMode determine_processing_mode(const bool &build_used, const bool &video_used) {
+ProcessingMode determine_processing_mode(bool build_used, bool video_used) {
   if (build_used && video_used)
     return ProcessingMode::VideoAndBuild;
   else if (video_used)

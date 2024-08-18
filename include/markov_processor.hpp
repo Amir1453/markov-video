@@ -36,4 +36,4 @@ private:
 
 enum class ProcessingMode { VideoAndBuild, VideoOnly, BuildOnly, NoOptions };
 
-ProcessingMode determine_processing_mode(const bool &build_used, const bool &video_used);
+ProcessingMode determine_processing_mode(bool build_used, bool video_used);
