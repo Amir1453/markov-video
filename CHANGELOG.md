@@ -10,6 +10,7 @@ All notable changes to this project will be documented in this file.
 - Added CHANGELOG.md
 - Created class MarkovProcessor.
 - Added get_timestamp().
+- Added file_extension option -fe to specify video extension.
 
 ### Changed
 

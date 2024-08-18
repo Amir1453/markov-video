@@ -19,8 +19,9 @@ void overlay_image_to_video(const fs::path &video_path, const fs::path &image_pa
   execute_command(command, verbose);
 }
 
-void overlay_images_to_videos(const fs::path &videos_path, const fs::path &images_path, std::size_t file_count,
-                              const fs::path &outputs_path, bool verbose) {
+void overlay_images_to_videos(const fs::path &videos_path, const std::string &video_extension,
+                              const fs::path &images_path, std::size_t file_count, const fs::path &outputs_path,
+                              bool verbose) {
   // Ensure the input file exists
   if (!fs::exists(videos_path)) {
     throw std::runtime_error("Input videos folder does not exist: " + videos_path.string());
@@ -33,9 +34,10 @@ void overlay_images_to_videos(const fs::path &videos_path, const fs::path &image
   create_dir(outputs_path);
 
   for (std::size_t i = 0; i < file_count; i++) {
-    const fs::path &video_file_path = std::to_string(i) + ".mp4";
+    const fs::path &video_file_path = std::to_string(i) + "." + video_extension;
     const fs::path &image_file_path = std::to_string(i) + ".png";
-    const fs::path &output_file_path = std::to_string(i) + std::string(constants::DEFAULT_VIDEO_OVERLAY_NAME) + ".mp4";
+    const fs::path &output_file_path =
+        std::to_string(i) + std::string(constants::DEFAULT_VIDEO_OVERLAY_NAME) + "." + video_extension;
     std::cout << "Overlaying " << images_path / image_file_path << " to " << videos_path / video_file_path << "."
               << std::endl;
     overlay_image_to_video(videos_path / video_file_path, images_path / image_file_path,
@@ -43,13 +45,15 @@ void overlay_images_to_videos(const fs::path &videos_path, const fs::path &image
   }
 }
 
-void create_filelist(const std::vector<std::size_t> &markov_states, const fs::path &filelist_path) {
+void create_filelist(const std::vector<std::size_t> &markov_states, const fs::path &filelist_path,
+                     const std::string &file_extension) {
   std::ofstream filelist(filelist_path);
 
   if (filelist.is_open()) {
     std::cout << "Creating filelist " << filelist_path << "." << std::endl;
     for (std::size_t state : markov_states) {
-      filelist << "file '" << state << constants::DEFAULT_VIDEO_OVERLAY_NAME << ".mp4'" << std::endl;
+      filelist << "file '" << state << constants::DEFAULT_VIDEO_OVERLAY_NAME << "." << file_extension << "'"
+               << std::endl;
     }
     filelist.close();
   } else {

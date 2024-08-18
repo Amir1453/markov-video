@@ -41,6 +41,7 @@ int main(int argc, char *argv[]) {
   program.add_argument("-flp", "--filelist-path")
       .default_value(std::string(constants::DEFAULT_FFMPEG_FILELIST))
       .help("specify the of the filelist path.");
+  program.add_argument("-fe", "--file-extension").default_value("mp4").help("specify the of the filelist path.");
 
   try {
     program.parse_args(argc, argv);
@@ -60,6 +61,7 @@ int main(int argc, char *argv[]) {
   const fs::path &latex_output_directory = program.get("-lod");
   const fs::path &filelist_path = program.get("-flp");
 
+  const std::string &file_extension = program.get("-fe");
   const std::string &latex_compiler = program.get("-lc");
   const std::string &latex_compiler_options = program.get("-lco");
 
@@ -72,8 +74,8 @@ int main(int argc, char *argv[]) {
                                      : fs::path(std::string(constants::DEFAULT_BUILD_DIRECTORY) + get_timestamp());
 
   MarkovChain mc(markov_file);
-  MarkovProcessor processor(mc, build_folder, output_path, latex_output_directory, filelist_path, latex_compiler,
-                            latex_compiler_options, edit_latex, verbose, no_cleanup);
+  MarkovProcessor processor(mc, build_folder, output_path, latex_output_directory, filelist_path, file_extension,
+                            latex_compiler, latex_compiler_options, edit_latex, verbose, no_cleanup);
 
   ProcessingMode mode = determine_processing_mode(program.is_used("-b"), program.is_used("-V"));
 
