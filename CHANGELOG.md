@@ -18,6 +18,7 @@ All notable changes to this project will be documented in this file.
 - Separated functions from the main function.
 - Replaced if statements with switch case enums.
 - Improved README.md.
+- Changed default build directory to build_{timestamp}.
 
 ### Fixed
 

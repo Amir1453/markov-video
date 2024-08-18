@@ -67,8 +67,9 @@ int main(int argc, char *argv[]) {
   const bool no_cleanup = program.get<bool>("-nc");
   const bool edit_latex = program.get<bool>("-el");
 
-  const fs::path &build_folder =
-      program.is_used("-b") ? fs::path(program.get("-b")) : output_path / constants::DEFAULT_BUILD_DIRECTORY;
+  const fs::path &build_folder = program.is_used("-b")
+                                     ? fs::path(program.get("-b"))
+                                     : fs::path(std::string(constants::DEFAULT_BUILD_DIRECTORY) + get_timestamp());
 
   MarkovChain mc(markov_file);
   MarkovProcessor processor(mc, build_folder, output_path, latex_output_directory, filelist_path, latex_compiler,
