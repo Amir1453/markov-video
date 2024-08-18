@@ -87,7 +87,7 @@ void compile_markov_graph(const fs::path &folder_path, const fs::path &file_name
                           const std::string &latex_compiler_options, bool verbose) {
   std::ostringstream command;
   command << latex_compiler << " " << latex_compiler_options
-          << " -interaction=nonstopmode -output-directory=" << folder_path / latex_output_directory
+          << " -interaction=nonstopmode -output-directory=" << folder_path / latex_output_directory << " "
           << folder_path / file_name;
 
   execute_command(command, verbose);
