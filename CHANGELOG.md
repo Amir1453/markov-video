@@ -26,6 +26,7 @@ All notable changes to this project will be documented in this file.
 - Removed unnecessary includes and added needed ones.
 - Fixed const& primitives to be copied.
 - Removed redundant backslashes from command strings.
+- Switched Markov class definition to snake_case.
 
 ## [0.1.1] - 2024-08-17
 

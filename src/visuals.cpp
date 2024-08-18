@@ -15,8 +15,8 @@ namespace fs = std::filesystem;
 
 void generate_markov_graph(const MarkovChain &mc, const fs::path &output_path, std::size_t highlight_index,
                            const std::string &highlight_color) {
-  const std::vector<std::vector<double>> &transitionMatrix = mc.getTransitionMatrix();
-  const std::vector<std::string> &state_names = mc.getStateNames();
+  const std::vector<std::vector<double>> &transitionMatrix = mc.get_transition_matrix();
+  const std::vector<std::string> &state_names = mc.get_state_names();
   const std::size_t &n = transitionMatrix.size();
   const std::size_t &nodesPerRow = 3;  // Number of nodes per row
   const double &verticalOffset = -1.5; // Vertical offset for the second row
@@ -74,7 +74,7 @@ void generate_markov_graph(const MarkovChain &mc, const fs::path &output_path, s
 }
 
 void generate_all_markov_graphs(const MarkovChain &mc, const fs::path &output_path) {
-  const std::size_t &chain_length = mc.getTransitionMatrixSize();
+  const std::size_t &chain_length = mc.get_transition_matrix_size();
   for (std::size_t i = 0; i < chain_length; i++) {
     const fs::path &output_file_path = std::to_string(i) + ".tex";
     std::cout << "Generating markov graph " << output_file_path << "." << std::endl;

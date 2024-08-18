@@ -19,7 +19,7 @@ MarkovProcessor::MarkovProcessor(MarkovChain &mc, const fs::path &build_folder, 
 
 void MarkovProcessor::video_and_build(const fs::path &video_folder, std::size_t iterations) {
   const auto &markov_states = iterate_markov_states(mc, iterations);
-  const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
+  const std::size_t &transition_matrix_size = mc.get_transition_matrix_size();
 
   create_dir(build_folder);
 
@@ -40,7 +40,7 @@ void MarkovProcessor::video_and_build(const fs::path &video_folder, std::size_t 
 }
 
 void MarkovProcessor::video_only(const fs::path &video_folder, std::size_t iterations) {
-  const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
+  const std::size_t &transition_matrix_size = mc.get_transition_matrix_size();
   const auto &markov_states = iterate_markov_states(mc, iterations);
 
   create_dir(build_folder);
@@ -61,7 +61,7 @@ void MarkovProcessor::video_only(const fs::path &video_folder, std::size_t itera
 }
 
 void MarkovProcessor::build_only() {
-  const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
+  const std::size_t &transition_matrix_size = mc.get_transition_matrix_size();
 
   create_dir(build_folder);
   create_dir(output_path);
@@ -79,7 +79,7 @@ void MarkovProcessor::build_only() {
 }
 
 void MarkovProcessor::no_options() {
-  const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
+  const std::size_t &transition_matrix_size = mc.get_transition_matrix_size();
 
   create_dir(build_folder);
   create_dir(output_path);
