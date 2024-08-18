@@ -86,8 +86,9 @@ void compile_markov_graph(const fs::path &folder_path, const fs::path &file_name
                           const fs::path &latex_output_directory, const std::string &latex_compiler,
                           const std::string &latex_compiler_options, bool verbose) {
   std::ostringstream command;
-  command << latex_compiler << " " << latex_compiler_options << " -interaction=nonstopmode -output-directory=\""
-          << folder_path / latex_output_directory << "\" \"" << folder_path / file_name << "\"";
+  command << latex_compiler << " " << latex_compiler_options
+          << " -interaction=nonstopmode -output-directory=" << folder_path / latex_output_directory
+          << folder_path / file_name;
 
   execute_command(command, verbose);
 }
@@ -114,7 +115,7 @@ void convert_pdf_to_png(const fs::path &file_path, const fs::path &output_path, 
 
   // Construct the command using ostringstream
   std::ostringstream command;
-  command << "magick -density 300 \"" << file_path << "\" -quality 100 -resize 200% \"" << output_path << "\"";
+  command << "magick -density 300 " << file_path << " -quality 100 -resize 200% " << output_path;
 
   execute_command(command, verbose);
 }

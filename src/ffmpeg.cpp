@@ -14,8 +14,7 @@ namespace fs = std::filesystem;
 void overlay_image_to_video(const fs::path &video_path, const fs::path &image_path, const fs::path &output_path,
                             bool verbose) {
   std::ostringstream command;
-  command << "ffmpeg -y -i \"" << video_path << "\" -i \"" << image_path << "\" -filter_complex \"overlay=10:10\" \""
-          << output_path << "\"";
+  command << "ffmpeg -y -i " << video_path << " -i " << image_path << " -filter_complex overlay=10:10 " << output_path;
 
   execute_command(command, verbose);
 }
@@ -61,7 +60,7 @@ void create_filelist(const std::vector<std::size_t> &markov_states, const fs::pa
 void combine_segments(const fs::path &filelist_path, const fs::path &output, bool verbose) {
   // Construct the ffmpeg command to combine videos side by side
   std::ostringstream command;
-  command << "ffmpeg -y -f concat -safe 0 -i \"" << filelist_path << "\" -c copy \"" << output << "\"";
+  command << "ffmpeg -y -f concat -safe 0 -i " << filelist_path << " -c copy " << output;
 
   std::cout << "Combining segments." << std::endl;
   execute_command(command, verbose);
