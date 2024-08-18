@@ -1,9 +1,15 @@
 #include "helpers.hpp"
+#include <chrono>
 #include <cstddef>
 #include <cstdlib>
+#include <ctime>
 #include <filesystem>
+#include <iomanip>
 #include <iostream>
+#include <sstream>
 #include <stdexcept>
+#include <string>
+#include <string_view>
 
 namespace fs = std::filesystem;
 
@@ -66,4 +72,14 @@ void wait_on_enter() {
   std::cout << "Please press enter after you are done." << std::endl;
   std::cin.get();
   std::cout << "Continuing.." << std::endl;
+}
+
+const std::string get_timestamp() {
+  auto now = std::chrono::system_clock::now();
+  std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
+
+  std::ostringstream oss;
+  oss << std::put_time(std::localtime(&now_time_t), "%Y%m%d_%H%M%S");
+
+  return oss.str();
 }

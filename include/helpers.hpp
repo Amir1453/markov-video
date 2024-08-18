@@ -14,7 +14,7 @@ constexpr std::string_view DEFAULT_VIDEO_OVERLAY_NAME = "_overlayed";
 constexpr std::string_view DEFAULT_LATEX_COMPILER = "xelatex";
 constexpr std::string_view DEFAULT_LATEX_OUTPUT_DIRECTORY = "latex_build";
 constexpr std::string_view DEFAULT_FFMPEG_FILELIST = "filelist.txt";
-constexpr std::string_view DEFAULT_BUILD_DIRECTORY = "temp";
+constexpr std::string_view DEFAULT_BUILD_DIRECTORY = "build_";
 
 constexpr std::string_view DEFAULT_LATEX_PREAMBLE =
     "\\documentclass[tikz, border=10pt]{standalone}\n"
@@ -33,3 +33,5 @@ void check_verbosity(std::ostringstream &command, bool verbose);
 void execute_command(std::ostringstream &command, bool verbose);
 // Waits until the user presses enter.
 void wait_on_enter();
+// Returns current timestamp as "%Y%m%d_%H%M%S".
+const std::string get_timestamp();

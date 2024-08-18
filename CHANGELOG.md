@@ -9,6 +9,7 @@ All notable changes to this project will be documented in this file.
 - Added -latex-compiler-options flag which allows users to input their own flags.
 - Added CHANGELOG.md
 - Created class MarkovProcessor.
+- Added get_timestamp().
 
 ### Changed
 
