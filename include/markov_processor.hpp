@@ -12,11 +12,11 @@ public:
                   const std::string &latex_compiler, const std::string &latex_compiler_options, bool edit_latex,
                   bool verbose, bool no_cleanup);
 
-  void build_and_video(const std::filesystem::path &video_folder, std::size_t iterations);
-
-  void build_only();
+  void video_and_build(const std::filesystem::path &video_folder, std::size_t iterations);
 
   void video_only(const std::filesystem::path &video_folder, std::size_t iterations);
+
+  void build_only();
 
   void no_options();
 
@@ -33,6 +33,6 @@ private:
   bool no_cleanup;
 };
 
-enum class ProcessingMode { BuildAndVideo, BuildOnly, VideoOnly, NoOptions };
+enum class ProcessingMode { VideoAndBuild, VideoOnly, BuildOnly, NoOptions };
 
 ProcessingMode determine_processing_mode(const bool &build_used, const bool &video_used);

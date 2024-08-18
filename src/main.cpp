@@ -78,21 +78,21 @@ int main(int argc, char *argv[]) {
   ProcessingMode mode = determine_processing_mode(program.is_used("-b"), program.is_used("-V"));
 
   switch (mode) {
-  case ProcessingMode::BuildAndVideo: {
+  case ProcessingMode::VideoAndBuild: {
     const fs::path &video_folder = program.get("-V");
     const std::size_t iterations = program.get<std::size_t>("-i");
-    processor.build_and_video(video_folder, iterations);
+    processor.video_and_build(video_folder, iterations);
     return 0;
   }
-  case ProcessingMode::BuildOnly:
-    processor.build_only();
-    return 0;
   case ProcessingMode::VideoOnly: {
     const fs::path &video_folder = program.get("-V");
     const std::size_t iterations = program.get<std::size_t>("-i");
     processor.video_only(video_folder, iterations);
     return 0;
   }
+  case ProcessingMode::BuildOnly:
+    processor.build_only();
+    return 0;
   case ProcessingMode::NoOptions:
     processor.no_options();
     return 0;
