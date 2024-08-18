@@ -82,6 +82,7 @@ void MarkovProcessor::no_options() {
   const std::size_t &transition_matrix_size = mc.getTransitionMatrixSize();
 
   create_dir(build_folder);
+  create_dir(output_path);
   generate_all_markov_graphs(mc, build_folder);
 
   if (edit_latex)
