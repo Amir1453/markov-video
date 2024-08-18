@@ -17,10 +17,7 @@ void overlay_image_to_video(const fs::path &video_path, const fs::path &image_pa
   command << "ffmpeg -y -i \"" << video_path << "\" -i \"" << image_path << "\" -filter_complex \"overlay=10:10\" \""
           << output_path << "\"";
 
-  check_verbosity(command, verbose);
-
-  // Execute the command
-  std::system(command.str().c_str());
+  execute_command(command, verbose);
 }
 
 void overlay_images_to_videos(const fs::path &videos_path, const fs::path &images_path, std::size_t file_count,
