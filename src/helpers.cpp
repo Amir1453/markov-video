@@ -1,5 +1,6 @@
 #include "helpers.hpp"
 #include <cstddef>
+#include <cstdlib>
 #include <filesystem>
 #include <iostream>
 #include <stdexcept>
