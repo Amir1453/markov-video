@@ -19,7 +19,7 @@ MarkovProcessor::MarkovProcessor(MarkovChain &mc, const fs::path &build_folder, 
       latex_compiler(latex_compiler), latex_compiler_options(latex_compiler_options), edit_latex(edit_latex),
       verbose(verbose), no_cleanup(no_cleanup) {}
 
-void MarkovProcessor::video(const fs::path &video_folder, std::size_t iterations) {
+void MarkovProcessor::video(const fs::path &video_folder, std::size_t iterations) const {
   const std::size_t &transition_matrix_size = mc.get_transition_matrix_size();
   const auto &markov_states = iterate_markov_states(mc, iterations);
 
@@ -40,7 +40,7 @@ void MarkovProcessor::video(const fs::path &video_folder, std::size_t iterations
     delete_dir_or_file(build_folder);
 }
 
-void MarkovProcessor::gif(std::size_t iterations) {
+void MarkovProcessor::gif(std::size_t iterations) const {
   const std::size_t &transition_matrix_size = mc.get_transition_matrix_size();
   const auto &markov_states = iterate_markov_states(mc, iterations);
 
@@ -60,7 +60,7 @@ void MarkovProcessor::gif(std::size_t iterations) {
     delete_dir_or_file(build_folder);
 }
 
-void MarkovProcessor::build_only() {
+void MarkovProcessor::build_only() const {
   const std::size_t &transition_matrix_size = mc.get_transition_matrix_size();
 
   create_dir(build_folder);
@@ -78,7 +78,7 @@ void MarkovProcessor::build_only() {
     delete_dir_or_file(build_folder);
 }
 
-void MarkovProcessor::no_options() {
+void MarkovProcessor::no_options() const {
   const std::size_t &transition_matrix_size = mc.get_transition_matrix_size();
 
   create_dir(build_folder);

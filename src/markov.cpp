@@ -26,7 +26,8 @@ MarkovChain::MarkovChain(const std::vector<std::vector<double>> &transition_matr
 
 MarkovChain::MarkovChain(const std::vector<std::vector<double>> &transition_matrix,
                          const std::vector<std::string> &state_names)
-    : transition_matrix(transition_matrix), state_names(state_names), current_state(0), generator(std::random_device{}()) {
+    : transition_matrix(transition_matrix), state_names(state_names), current_state(0),
+      generator(std::random_device{}()) {
   validate_transition_matrix();
   validate_state_names();
 }
@@ -44,7 +45,7 @@ MarkovChain::MarkovChain(const fs::path &markov_file, const std::vector<std::str
   validate_state_names();
 }
 
-void MarkovChain::validate_transition_matrix() {
+void MarkovChain::validate_transition_matrix() const {
   std::size_t matrix_length = transition_matrix.size();
   for (const auto &row : transition_matrix) {
     if (row.size() != matrix_length) {
@@ -99,7 +100,7 @@ void MarkovChain::linear_state_names() {
   }
 }
 
-void MarkovChain::validate_state_names() {
+void MarkovChain::validate_state_names() const {
   if (state_names.size() != transition_matrix.size()) {
     throw std::invalid_argument("State names vector length does not match with transition matrix.");
   }
@@ -112,7 +113,7 @@ void MarkovChain::set_current_state(std::size_t state) {
   current_state = state;
 }
 
-std::size_t MarkovChain::get_current_state() { return current_state; }
+std::size_t MarkovChain::get_current_state() const { return current_state; }
 
 std::size_t MarkovChain::next_state() {
   std::discrete_distribution<int> distribution(transition_matrix[current_state].begin(),

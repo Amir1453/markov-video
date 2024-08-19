@@ -17,7 +17,7 @@ public:
   // Sets the current state of the Markov Chain to the value provided.
   void set_current_state(std::size_t state);
   // Returns the currrent state of the Markov Chain.
-  std::size_t get_current_state();
+  std::size_t get_current_state() const;
   // Causes the Markov Chain to evolve in to the next state. The probabilities are decided based on the
   // transitionMatrix.
   std::size_t next_state();
@@ -43,7 +43,7 @@ private:
   // Validates that the transitionMatrix follows the rules of a regular Markov Chain.
   // That is, the matrix is a square matrix, the probabilities in each row sum to 1.0, and the probabilities are
   // non-negative.
-  void validate_transition_matrix();
+  void validate_transition_matrix() const;
   // Initializes the transitionMatrix of the Markov Chain from a file. The file must have the values of each row
   // seperated by a comma. Function takes in the path to the file.
   void transition_matrix_from_file(const std::filesystem::path &markov_file);
@@ -51,7 +51,7 @@ private:
   // Fills up the stateNames vector with linear values between 0 and N.
   void linear_state_names();
   // Validates that the state names vector length matches the transition matrix vector length.
-  void validate_state_names();
+  void validate_state_names() const;
 };
 
 // Iterates the Markov Chain iterations times. Each state is written to an std::vector with values from std::size_t.

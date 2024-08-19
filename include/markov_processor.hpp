@@ -13,13 +13,13 @@ public:
                   const std::string &latex_compiler, const std::string &latex_compiler_options, bool edit_latex,
                   bool verbose, bool no_cleanup);
 
-  void video(const std::filesystem::path &video_folder, std::size_t iterations);
+  void video(const std::filesystem::path &video_folder, std::size_t iterations) const;
 
-  void gif(std::size_t iterations);
+  void gif(std::size_t iterations) const;
 
-  void build_only();
+  void build_only() const;
 
-  void no_options();
+  void no_options() const;
 
 private:
   MarkovChain &mc;
