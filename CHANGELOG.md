@@ -11,6 +11,7 @@ All notable changes to this project will be documented in this file.
 - Created class MarkovProcessor.
 - Added get_timestamp().
 - Added file_extension option -fe to specify video extension.
+- Added .clang-format so that formatting on other machines does not break.
 
 ### Changed
 
