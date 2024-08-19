@@ -42,6 +42,9 @@ int main(int argc, char *argv[]) {
       .default_value(std::string(constants::DEFAULT_FFMPEG_FILELIST))
       .help("specify the of the filelist path.");
   program.add_argument("-fe", "--file-extension").default_value("mp4").help("specify the of the filelist path.");
+  program.add_argument("-oe", "--overlay-extension")
+      .default_value(std::string(constants::DEFAULT_VIDEO_OVERLAY_NAME))
+      .help("specify the overlay extension.");
 
   try {
     program.parse_args(argc, argv);
@@ -64,6 +67,7 @@ int main(int argc, char *argv[]) {
   const std::string &file_extension = program.get("-fe");
   const std::string &latex_compiler = program.get("-lc");
   const std::string &latex_compiler_options = program.get("-lco");
+  const std::string &overlay_extension = program.get("-oe");
 
   const bool verbose = program.get<bool>("--verbose");
   const bool no_cleanup = program.get<bool>("-nc");
@@ -75,28 +79,24 @@ int main(int argc, char *argv[]) {
 
   MarkovChain mc(markov_file);
   MarkovProcessor processor(mc, build_folder, output_path, latex_output_directory, filelist_path, file_extension,
-                            latex_compiler, latex_compiler_options, edit_latex, verbose, no_cleanup);
+                            overlay_extension, latex_compiler, latex_compiler_options, edit_latex, verbose, no_cleanup);
 
-  ProcessingMode mode = determine_processing_mode(program.is_used("-b"), program.is_used("-V"));
+  ProcessingMode mode = determine_processing_mode(program.is_used("-V"), program.is_used("-G"));
 
   switch (mode) {
-  case ProcessingMode::VideoAndBuild: {
+  case ProcessingMode::Video: {
     const fs::path &video_folder = program.get("-V");
     const std::size_t iterations = program.get<std::size_t>("-i");
-    processor.video_and_build(video_folder, iterations);
+    processor.video(video_folder, iterations);
     return 0;
   }
-  case ProcessingMode::VideoOnly: {
-    const fs::path &video_folder = program.get("-V");
+  case ProcessingMode::GIF: {
     const std::size_t iterations = program.get<std::size_t>("-i");
-    processor.video_only(video_folder, iterations);
+    processor.gif(iterations);
     return 0;
   }
   case ProcessingMode::BuildOnly:
     processor.build_only();
-    return 0;
-  case ProcessingMode::NoOptions:
-    processor.no_options();
     return 0;
   }
 

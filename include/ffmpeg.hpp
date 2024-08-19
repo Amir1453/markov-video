@@ -15,8 +15,11 @@ void overlay_images_to_videos(const std::filesystem::path &videos_folder_path, c
 // Takes in a vector of Markov Chain states, and creates a filelist for ffmpeg to merge the videos together. The output
 // path is filelist_path.
 void create_filelist(const std::vector<std::size_t> &markov_states, const std::filesystem::path &filelist_path,
-                     const std::string &file_extension);
+                     const std::string &overlay_name, const std::string &file_extension);
 // Takes in a filelist_path, reads from the filelist and uses the ffmpeg CLI to output a merged video to the output
 // location.
 void combine_segments(const std::filesystem::path &filelist_path, const std::filesystem::path &output,
                       bool verbose = false);
+
+void create_gif(const std::filesystem::path &filelist_path, const std::filesystem::path &output_gif_path,
+                bool verbose = false);

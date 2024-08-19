@@ -46,13 +46,13 @@ void overlay_images_to_videos(const fs::path &videos_path, const std::string &vi
 }
 
 void create_filelist(const std::vector<std::size_t> &markov_states, const fs::path &filelist_path,
-                     const std::string &file_extension) {
+                     const std::string &overlay_name, const std::string &file_extension) {
   std::ofstream filelist(filelist_path);
 
   if (filelist.is_open()) {
     std::cout << "Creating filelist " << filelist_path << "." << std::endl;
     for (std::size_t state : markov_states) {
-      filelist << "file '" << state << constants::DEFAULT_VIDEO_OVERLAY_NAME << "." << file_extension << "'"
+      filelist << "file '" << state << overlay_name << "." << file_extension << "'"
                << std::endl;
     }
     filelist.close();
@@ -67,5 +67,14 @@ void combine_segments(const fs::path &filelist_path, const fs::path &output, boo
   command << "ffmpeg -y -f concat -safe 0 -i " << filelist_path << " -c copy " << output;
 
   std::cout << "Combining segments." << std::endl;
+  execute_command(command, verbose);
+}
+
+void create_gif(const fs::path &filelist_path, const fs::path &output_gif_path, bool verbose) {
+  std::ostringstream command;
+  command << "ffmpeg -y -f concat -safe 0 -i " << filelist_path << " -vf \"fps=10,scale=320:-1:flags=lanczos\" -c:v gif "
+          << output_gif_path;
+
+  std::cout << "Creating GIF." << std::endl;
   execute_command(command, verbose);
 }
