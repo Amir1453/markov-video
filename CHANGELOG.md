@@ -22,6 +22,7 @@ All notable changes to this project will be documented in this file.
 - Improved README.md.
 - Changed default build directory to build_{timestamp}.
 - Added DEFAULT_VIDEO_EXTENSION to constants. 
+- Moved argparse library to ./external/argparse.hpp.
 
 ### Fixed
 

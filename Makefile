@@ -18,6 +18,7 @@ RELEASE_DIR := $(BUILD_DIR)/release
 
 SRC_DIRS := ./src
 INC_DIRS := ./include
+EXT_DIRS := ./external
 
 # Find all the C and C++ files we want to compile
 # Prepends BUILD_DIR and appends .o to every src file
@@ -32,10 +33,12 @@ DEPS_RELEASE := $(OBJS_RELEASE:.o=.d)
 
 # Add a prefix to INC_DIRS.
 INC_FLAGS := $(addprefix -I,$(INC_DIRS))
+# Add a prefix to EXT_DIRS
+EXT_FLAGS := $(addprefix -I,$(EXT_DIRS))
 
 # CPP debug and release flags
-CPPFLAGS := $(INC_FLAGS) -MMD -MP -std=c++17 -O0 -g -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer -fno-inline -Wall -Wextra -Wstrict-aliasing=2 -Wcast-align -Wfloat-equal -Wdeprecated -Wpedantic
-CPPFLAGS_RELEASE := $(INC_FLAGS) -MMD -MP -std=c++17 -O3 -flto -finline-functions -fomit-frame-pointer -fmerge-all-constants -fstrict-aliasing -march=x86-64 -mtune=generic
+CPPFLAGS := $(EXT_FLAGS) $(INC_FLAGS) -MMD -MP -std=c++17 -O0 -g -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer -fno-inline -Wall -Wextra -Wstrict-aliasing=2 -Wcast-align -Wfloat-equal -Wdeprecated -Wpedantic
+CPPFLAGS_RELEASE := $(EXT_FLAGS) $(INC_FLAGS) -MMD -MP -std=c++17 -O3 -flto -finline-functions -fomit-frame-pointer -fmerge-all-constants -fstrict-aliasing -march=x86-64 -mtune=generic
 
 LDFLAGS_DEBUG := -fsanitize=address -fsanitize=undefined 
 LDFLAGS_RELEASE := -flto
