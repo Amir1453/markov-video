@@ -41,7 +41,9 @@ int main(int argc, char *argv[]) {
   program.add_argument("-flp", "--filelist-path")
       .default_value(std::string(constants::DEFAULT_FFMPEG_FILELIST))
       .help("specify the of the filelist path.");
-  program.add_argument("-fe", "--file-extension").default_value("mp4").help("specify the of the filelist path.");
+  program.add_argument("-fe", "--file-extension")
+      .default_value(std::string(constants::DEFAULT_VIDEO_EXTENSION))
+      .help("specify the of the filelist path.");
   program.add_argument("-oe", "--overlay-extension")
       .default_value(std::string(constants::DEFAULT_VIDEO_OVERLAY_NAME))
       .help("specify the overlay extension.");

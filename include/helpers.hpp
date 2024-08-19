@@ -11,6 +11,7 @@ constexpr double ZERO = 0.0;
 constexpr double ONE = 1.0;
 
 constexpr std::string_view DEFAULT_VIDEO_OVERLAY_NAME = "_overlayed";
+constexpr std::string_view DEFAULT_VIDEO_EXTENSION = "mp4";
 constexpr std::string_view DEFAULT_LATEX_COMPILER = "xelatex";
 constexpr std::string_view DEFAULT_LATEX_OUTPUT_DIRECTORY = "latex_build";
 constexpr std::string_view DEFAULT_FFMPEG_FILELIST = "filelist.txt";

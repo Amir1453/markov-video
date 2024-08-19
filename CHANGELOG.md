@@ -20,6 +20,7 @@ All notable changes to this project will be documented in this file.
 - Replaced if statements with switch case enums.
 - Improved README.md.
 - Changed default build directory to build_{timestamp}.
+- Added DEFAULT_VIDEO_EXTENSION to constants. 
 
 ### Fixed
 
