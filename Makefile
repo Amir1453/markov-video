@@ -37,9 +37,12 @@ INC_FLAGS := $(addprefix -I,$(INC_DIRS))
 CPPFLAGS := $(INC_FLAGS) -MMD -MP -std=c++17 -O0 -g -fsanitize=address -fsanitize=undefined -fno-omit-frame-pointer -fno-inline -Wall -Wextra -Wstrict-aliasing=2 -Wcast-align -Wfloat-equal -Wdeprecated -Wpedantic
 CPPFLAGS_RELEASE := $(INC_FLAGS) -MMD -MP -std=c++17 -O3 -flto -finline-functions -fomit-frame-pointer -fmerge-all-constants -fstrict-aliasing -march=x86-64 -mtune=generic
 
+LDFLAGS_DEBUG := -fsanitize=address -fsanitize=undefined 
+LDFLAGS_RELEASE := -flto
+
 # The final build step.
 $(DEBUG_DIR)/$(TARGET_EXEC): $(OBJS)
-	$(CXX) $(OBJS) -fsanitize=address -fsanitize=undefined -o $@ $(LDFLAGS)
+	$(CXX) $(OBJS) $(LDFLAGS_DEBUG) -o $@ $(LDFLAGS)
 
 # Build step for C source
 $(DEBUG_DIR)/%.c.o: %.c
@@ -56,7 +59,7 @@ $(DEBUG_DIR)/%.cpp.o: %.cpp
 release: $(RELEASE_DIR)/$(TARGET_EXEC)
 
 $(RELEASE_DIR)/$(TARGET_EXEC): $(OBJS_RELEASE)
-	$(CXX) $(OBJS_RELEASE) -flto -o $@ $(LDFLAGS)
+	$(CXX) $(OBJS_RELEASE) $(LDFLAGS_RELEASE) -o $@ $(LDFLAGS)
 
 # Build step for C source
 $(RELEASE_DIR)/%.c.o: %.c
